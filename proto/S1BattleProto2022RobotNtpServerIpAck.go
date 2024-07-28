@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotNtpServerIpAck struct {
-	Ip uint32
-}
-
 const S1BattleProto2022RobotNtpServerIpAckSize = 4
 
 func (s *S1BattleProto2022RobotNtpServerIpAck) Serialize() []byte {

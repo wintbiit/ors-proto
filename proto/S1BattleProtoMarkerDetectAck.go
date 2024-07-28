@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoMarkerDetectAck struct {
-	Result byte
-}
-
 const S1BattleProtoMarkerDetectAckSize = 1
 
 func (s *S1BattleProtoMarkerDetectAck) Serialize() []byte {

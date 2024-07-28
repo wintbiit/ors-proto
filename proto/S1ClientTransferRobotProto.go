@@ -1,10 +1,5 @@
 package proto
 
-type S1ClientTransferRobotProto struct {
-	Data    []byte
-	DataLen int32
-}
-
 const S1ClientTransferRobotProtoSize = 4
 
 func (s *S1ClientTransferRobotProto) Serialize() []byte {

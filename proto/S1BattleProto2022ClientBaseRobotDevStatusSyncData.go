@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientBaseRobotDevStatusSyncData struct {
-	BaseRobotDevStatusList    []S1BattleProto2022ClientBaseRobotDevStatus
-	BaseRobotDevStatusListLen byte
-}
-
 const S1BattleProto2022ClientBaseRobotDevStatusSyncDataSize = 89
 
 func (s *S1BattleProto2022ClientBaseRobotDevStatusSyncData) Serialize() []byte {

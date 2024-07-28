@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientBuffSlot struct {
-	BuffItemsLen int32
-	BuffItems    []S1BattleProto2022ClientBuffItem
-}
-
 const S1BattleProto2022ClientBuffSlotSize = 44
 
 func (s *S1BattleProto2022ClientBuffSlot) Serialize() []byte {

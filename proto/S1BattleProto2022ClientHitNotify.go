@@ -1,14 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientHitNotify struct {
-	ArmorNumber byte
-	HpReduce    int32
-	HpCurr      int32
-	HpMax       int32
-	RobotId     byte
-	OnHitType   byte
-}
-
 const S1BattleProto2022ClientHitNotifySize = 15
 
 func (s *S1BattleProto2022ClientHitNotify) Serialize() []byte {

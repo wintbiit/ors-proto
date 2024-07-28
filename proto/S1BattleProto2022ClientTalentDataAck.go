@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientTalentDataAck struct {
-	Result int32
-}
-
 const S1BattleProto2022ClientTalentDataAckSize = 4
 
 func (s *S1BattleProto2022ClientTalentDataAck) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotNewHeartBeatAck struct {
-	Nouse byte
-}
-
 const S1BattleProto2022RobotNewHeartBeatAckSize = 1
 
 func (s *S1BattleProto2022RobotNewHeartBeatAck) Serialize() []byte {

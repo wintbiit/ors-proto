@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetSvrInfoReq struct {
-	SvrName string
-}
-
 const S1ProtoSetSvrInfoReqSize = 32
 
 func (s *S1ProtoSetSvrInfoReq) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2023ClientChangeTokenCmd struct {
-	NewToken string
-	Len      uint16
-}
-
 const S1BattleProto2023ClientChangeTokenCmdSize = 258
 
 func (s *S1BattleProto2023ClientChangeTokenCmd) Serialize() []byte {

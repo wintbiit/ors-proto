@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotMeasureStartReq struct {
-	MaxPrriod  uint32
-	PushPrriod uint32
-}
-
 const S1BattleProto2022RobotMeasureStartReqSize = 8
 
 func (s *S1BattleProto2022RobotMeasureStartReq) Serialize() []byte {

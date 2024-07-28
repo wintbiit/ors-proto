@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientRobotFirstData struct {
-	Userid uint16
-}
-
 const S1BattleProto2022ClientRobotFirstDataSize = 2
 
 func (s *S1BattleProto2022ClientRobotFirstData) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoShareBulletReq struct {
-	BulletIndex byte
-	TeamId      byte
-}
-
 const S1BattleProtoShareBulletReqSize = 2
 
 func (s *S1BattleProtoShareBulletReq) Serialize() []byte {

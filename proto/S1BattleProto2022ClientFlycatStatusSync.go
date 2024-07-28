@@ -1,21 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientFlycatStatusSync struct {
-	SysState                   byte
-	WorkState                  byte
-	Battery                    byte
-	MotorOneOnlineError        byte
-	MotorTwoOnlineError        byte
-	MotorOneOverheatError      byte
-	TeamId                     byte
-	Online                     byte
-	CtrlState                  byte
-	MotorTwoOverheatError      byte
-	LowBatteryWarning          byte
-	LowBatteryWarningThreshold byte
-	BatteryRenewThreshold      byte
-}
-
 const S1BattleProto2022ClientFlycatStatusSyncSize = 13
 
 func (s *S1BattleProto2022ClientFlycatStatusSync) Serialize() []byte {

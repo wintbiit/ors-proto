@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022StuAreialEnergy struct {
-	Cmd        uint16
-	RemainTime byte
-}
-
 const S1BattleProto2022StuAreialEnergySize = 3
 
 func (s *S1BattleProto2022StuAreialEnergy) Serialize() []byte {

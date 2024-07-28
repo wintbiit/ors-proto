@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProtoSceneStateNotify struct {
-	TimeLeft        int32
-	TeamCount       int32
-	TeamHurtSum     []int32
-	TeamBekillCount []int32
-	State           e_Scene_StateType
-}
-
 const S1BattleProtoSceneStateNotifySize = 12
 
 func (s *S1BattleProtoSceneStateNotify) Serialize() []byte {

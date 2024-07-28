@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientRobotMapData struct {
-	Yaw       float32
-	Joinstate byte
-	IsAlive   byte
-	X         float32
-	Y         float32
-}
-
 const S1BattleProto2022ClientRobotMapDataSize = 14
 
 func (s *S1BattleProto2022ClientRobotMapData) Serialize() []byte {

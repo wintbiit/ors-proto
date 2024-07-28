@@ -1,11 +1,5 @@
 package proto
 
-type S1ProtoClientNetworkInfoNotify struct {
-	Robotid         byte
-	VtUplinkSpeed   uint32
-	VtDownlinkSpeed uint32
-}
-
 const S1ProtoClientNetworkInfoNotifySize = 9
 
 func (s *S1ProtoClientNetworkInfoNotify) Serialize() []byte {

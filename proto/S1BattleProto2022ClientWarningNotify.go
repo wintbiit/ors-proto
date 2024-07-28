@@ -1,15 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientWarningNotify struct {
-	HpChangePercent byte
-	MaskTimeSelf    byte
-	MaskTimeOthers  byte
-	Type            byte
-	Team            byte
-	RobotId         byte
-	Leftcredit      byte
-}
-
 const S1BattleProto2022ClientWarningNotifySize = 7
 
 func (s *S1BattleProto2022ClientWarningNotify) Serialize() []byte {

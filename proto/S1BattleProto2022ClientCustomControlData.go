@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientCustomControlData struct {
-	RobotId     int32
-	DataLen     int32
-	DataListLen byte
-	DataList    []byte
-}
-
 const S1BattleProto2022ClientCustomControlDataSize = 39
 
 func (s *S1BattleProto2022ClientCustomControlData) Serialize() []byte {

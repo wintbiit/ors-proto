@@ -1,11 +1,5 @@
 package proto
 
-type S1ProtoTeamLogoNotify struct {
-	Data    string
-	Teamid  int32
-	DataLen int32
-}
-
 const S1ProtoTeamLogoNotifySize = 8
 
 func (s *S1ProtoTeamLogoNotify) Serialize() []byte {

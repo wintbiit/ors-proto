@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnergyReset struct {
-	Res byte
-}
-
 const S1BattleProto2022EnergyResetSize = 1
 
 func (s *S1BattleProto2022EnergyReset) Serialize() []byte {

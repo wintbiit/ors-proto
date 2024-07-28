@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientRecoverCardStatus struct {
-	Redcard  byte
-	Bluecard byte
-}
-
 const S1BattleProto2022ClientRecoverCardStatusSize = 2
 
 func (s *S1BattleProto2022ClientRecoverCardStatus) Serialize() []byte {

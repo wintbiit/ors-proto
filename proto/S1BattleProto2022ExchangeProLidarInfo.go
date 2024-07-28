@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022ExchangeProLidarInfo struct {
-	ModuleId   byte
-	State      byte
-	ModuleType byte
-}
-
 const S1BattleProto2022ExchangeProLidarInfoSize = 3
 
 func (s *S1BattleProto2022ExchangeProLidarInfo) Serialize() []byte {

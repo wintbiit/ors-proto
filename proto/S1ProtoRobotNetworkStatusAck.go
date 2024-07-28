@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoRobotNetworkStatusAck struct {
-	WifiDownlinkPlr uint16
-	VtDownlinkPlr   uint16
-}
-
 const S1ProtoRobotNetworkStatusAckSize = 4
 
 func (s *S1ProtoRobotNetworkStatusAck) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotBaseDevCtlCmdAck struct {
-	Placeholder byte
-}
-
 const S1BattleProto2022RobotBaseDevCtlCmdAckSize = 1
 
 func (s *S1BattleProto2022RobotBaseDevCtlCmdAck) Serialize() []byte {

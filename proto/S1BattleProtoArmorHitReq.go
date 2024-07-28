@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProtoArmorHitReq struct {
-	Index       int32
-	AttackType  int32
-	AttackerUid uint64
-	AccValue    int32
-	MicValue    int32
-}
-
 const S1BattleProtoArmorHitReqSize = 24
 
 func (s *S1BattleProtoArmorHitReq) Serialize() []byte {

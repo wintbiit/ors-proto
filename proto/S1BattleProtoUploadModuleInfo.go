@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoUploadModuleInfo struct {
-	DataLen int32
-	Data    string
-}
-
 const S1BattleProtoUploadModuleInfoSize = 4
 
 func (s *S1BattleProtoUploadModuleInfo) Serialize() []byte {

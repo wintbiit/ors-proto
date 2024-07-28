@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022StuRobotHurt struct {
-	Cmd      uint16
-	Armor    byte
-	Hurttype byte
-}
-
 const S1BattleProto2022StuRobotHurtSize = 4
 
 func (s *S1BattleProto2022StuRobotHurt) Serialize() []byte {

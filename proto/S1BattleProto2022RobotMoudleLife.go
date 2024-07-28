@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotMoudleLife struct {
-	Status        string
-	ModuleId      byte
-	ModuleType    byte
-	AckModuleId   byte
-	AckModuleType byte
-}
-
 const S1BattleProto2022RobotMoudleLifeSize = 260
 
 func (s *S1BattleProto2022RobotMoudleLife) Serialize() []byte {

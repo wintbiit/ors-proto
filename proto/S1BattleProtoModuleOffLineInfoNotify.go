@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoModuleOffLineInfoNotify struct {
-	Nouse byte
-}
-
 const S1BattleProtoModuleOffLineInfoNotifySize = 1
 
 func (s *S1BattleProtoModuleOffLineInfoNotify) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoTestAck struct {
-	ResultId int32
-	Test     string
-}
-
 const S1ProtoTestAckSize = 10244
 
 func (s *S1ProtoTestAck) Serialize() []byte {

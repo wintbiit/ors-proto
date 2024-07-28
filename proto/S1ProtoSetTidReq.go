@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetTidReq struct {
-	Tid   uint32
-	Token string
-}
-
 const S1ProtoSetTidReqSize = 36
 
 func (s *S1ProtoSetTidReq) Serialize() []byte {

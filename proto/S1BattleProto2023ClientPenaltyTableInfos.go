@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2023ClientPenaltyTableInfos struct {
-	UploadType byte
-	InfosLen   byte
-	Infos      []S1BattleProto2023ClientPenaltyInfo
-}
-
 const S1BattleProto2023ClientPenaltyTableInfosSize = 7282
 
 func (s *S1BattleProto2023ClientPenaltyTableInfos) Serialize() []byte {

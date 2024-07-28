@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022StuGameResult struct {
-	Cmd    uint16
-	Winner byte
-}
-
 const S1BattleProto2022StuGameResultSize = 3
 
 func (s *S1BattleProto2022StuGameResult) Serialize() []byte {

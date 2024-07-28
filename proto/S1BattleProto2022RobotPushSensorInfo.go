@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotPushSensorInfo struct {
-	OutputCurrent     float32
-	RechargingCurrent float32
-	Status            byte
-	Voltage           float32
-}
-
 const S1BattleProto2022RobotPushSensorInfoSize = 13
 
 func (s *S1BattleProto2022RobotPushSensorInfo) Serialize() []byte {

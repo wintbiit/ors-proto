@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoRoomPauseNotify struct {
-	TimeElapse int32
-}
-
 const S1ProtoRoomPauseNotifySize = 4
 
 func (s *S1ProtoRoomPauseNotify) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoRobotNetworkStatusReq struct {
-	Nouse byte
-}
-
 const S1ProtoRobotNetworkStatusReqSize = 1
 
 func (s *S1ProtoRobotNetworkStatusReq) Serialize() []byte {

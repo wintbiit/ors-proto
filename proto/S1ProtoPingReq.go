@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoPingReq struct {
-	Nouse byte
-}
-
 const S1ProtoPingReqSize = 1
 
 func (s *S1ProtoPingReq) Serialize() []byte {

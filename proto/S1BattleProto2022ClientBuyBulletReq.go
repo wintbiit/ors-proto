@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientBuyBulletReq struct {
-	Type  byte
-	Count byte
-}
-
 const S1BattleProto2022ClientBuyBulletReqSize = 2
 
 func (s *S1BattleProto2022ClientBuyBulletReq) Serialize() []byte {

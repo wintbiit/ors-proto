@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetTokenReq struct {
-	Token string
-}
-
 const S1ProtoSetTokenReqSize = 32
 
 func (s *S1ProtoSetTokenReq) Serialize() []byte {

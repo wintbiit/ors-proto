@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyExportReq struct {
-	ExportEnable byte
-}
-
 const S1BattleProto2022SupplyExportReqSize = 1
 
 func (s *S1BattleProto2022SupplyExportReq) Serialize() []byte {

@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProtoReduceReliveTimeNotify struct {
-	PlayerUid uint64
-	TimeMax   float32
-	TimeLeft  float32
-}
-
 const S1BattleProtoReduceReliveTimeNotifySize = 16
 
 func (s *S1BattleProtoReduceReliveTimeNotify) Serialize() []byte {

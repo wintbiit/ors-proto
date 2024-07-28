@@ -1,14 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientRobotArmorLifeQueryResult struct {
-	RobotId            byte
-	RobotTotalArmorNum int32
-	InfosLen           byte
-	LifeInfos          []S1BattleProto2022ClientArmorLifeInfo
-	IsWindMill         byte
-	WindMillTeamId     byte
-}
-
 const S1BattleProto2022ClientRobotArmorLifeQueryResultSize = 56
 
 func (s *S1BattleProto2022ClientRobotArmorLifeQueryResult) Serialize() []byte {

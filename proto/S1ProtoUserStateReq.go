@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoUserStateReq struct {
-	Account  string
-	Password string
-}
-
 const S1ProtoUserStateReqSize = 64
 
 func (s *S1ProtoUserStateReq) Serialize() []byte {

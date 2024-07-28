@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022StuRobotBuff struct {
-	CoolBuff    byte
-	DefenceBuff byte
-	AttackBuff  byte
-	Cmd         uint16
-	HealBuff    byte
-}
-
 const S1BattleProto2022StuRobotBuffSize = 6
 
 func (s *S1BattleProto2022StuRobotBuff) Serialize() []byte {

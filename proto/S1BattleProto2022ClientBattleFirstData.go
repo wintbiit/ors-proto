@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientBattleFirstData struct {
-	Progress byte
-	IsPaused byte
-}
-
 const S1BattleProto2022ClientBattleFirstDataSize = 2
 
 func (s *S1BattleProto2022ClientBattleFirstData) Serialize() []byte {

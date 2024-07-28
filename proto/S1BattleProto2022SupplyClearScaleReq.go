@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyClearScaleReq struct {
-	Placeholder byte
-}
-
 const S1BattleProto2022SupplyClearScaleReqSize = 1
 
 func (s *S1BattleProto2022SupplyClearScaleReq) Serialize() []byte {

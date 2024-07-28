@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022LedColor struct {
-	G byte
-	B byte
-	R byte
-}
-
 const S1BattleProto2022LedColorSize = 3
 
 func (s *S1BattleProto2022LedColor) Serialize() []byte {

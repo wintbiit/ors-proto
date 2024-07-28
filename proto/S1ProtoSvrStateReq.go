@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSvrStateReq struct {
-	Nouse byte
-}
-
 const S1ProtoSvrStateReqSize = 1
 
 func (s *S1ProtoSvrStateReq) Serialize() []byte {

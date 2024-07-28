@@ -1,15 +1,5 @@
 package proto
 
-type S1ProtoTechnicalPauseInfoNotify struct {
-	BlueLongPauseLeftCount  byte
-	PausedDuration          uint32
-	PauseTimeType           byte
-	PauseSide               byte
-	RedShortPauseLeftCount  byte
-	RedLongPauseLeftCount   byte
-	BlueShortPauseLeftCount byte
-}
-
 const S1ProtoTechnicalPauseInfoNotifySize = 10
 
 func (s *S1ProtoTechnicalPauseInfoNotify) Serialize() []byte {

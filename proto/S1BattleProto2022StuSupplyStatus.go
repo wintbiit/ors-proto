@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022StuSupplyStatus struct {
-	BulletsNum      byte
-	Cmd             uint16
-	SupplyEnvId     byte
-	SupplyRobotId   byte
-	SupplyEnvStatus byte
-}
-
 const S1BattleProto2022StuSupplyStatusSize = 6
 
 func (s *S1BattleProto2022StuSupplyStatus) Serialize() []byte {

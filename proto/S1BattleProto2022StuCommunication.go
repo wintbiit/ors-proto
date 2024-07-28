@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022StuCommunication struct {
-	DataId     uint16
-	SenderId   uint16
-	ReceiverId uint16
-}
-
 const S1BattleProto2022StuCommunicationSize = 6
 
 func (s *S1BattleProto2022StuCommunication) Serialize() []byte {

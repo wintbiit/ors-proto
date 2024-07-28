@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotMeasureStopRsp struct {
-	Res byte
-}
-
 const S1BattleProto2022RobotMeasureStopRspSize = 1
 
 func (s *S1BattleProto2022RobotMeasureStopRsp) Serialize() []byte {

@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProtoGunFireNotify struct {
-	AttackerUid uint64
-	GunType     byte
-	GunSpeed    float32
-}
-
 const S1BattleProtoGunFireNotifySize = 13
 
 func (s *S1BattleProtoGunFireNotify) Serialize() []byte {

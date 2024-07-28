@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022PowerSwitchState struct {
-	Chassis byte
-	Gimbal  byte
-	Shooter byte
-}
-
 const S1BattleProto2022PowerSwitchStateSize = 3
 
 func (s *S1BattleProto2022PowerSwitchState) Serialize() []byte {

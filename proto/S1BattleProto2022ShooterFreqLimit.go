@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022ShooterFreqLimit struct {
-	ShooterFreqThreshold    float32
-	ShooterFreqMaxHurt      uint16
-	ShooterFreqHurtTabCount int32
-	ShooterFreqHurtTab      []byte
-}
-
 const S1BattleProto2022ShooterFreqLimitSize = 22
 
 func (s *S1BattleProto2022ShooterFreqLimit) Serialize() []byte {

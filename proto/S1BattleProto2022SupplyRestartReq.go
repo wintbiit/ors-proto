@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyRestartReq struct {
-	Placeholder byte
-}
-
 const S1BattleProto2022SupplyRestartReqSize = 1
 
 func (s *S1BattleProto2022SupplyRestartReq) Serialize() []byte {

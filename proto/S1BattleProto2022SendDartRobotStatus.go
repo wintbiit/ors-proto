@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SendDartRobotStatus struct {
-	Connectstatus byte
-}
-
 const S1BattleProto2022SendDartRobotStatusSize = 1
 
 func (s *S1BattleProto2022SendDartRobotStatus) Serialize() []byte {

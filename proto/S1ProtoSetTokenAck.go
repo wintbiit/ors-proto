@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetTokenAck struct {
-	ResultId int32
-}
-
 const S1ProtoSetTokenAckSize = 4
 
 func (s *S1ProtoSetTokenAck) Serialize() []byte {

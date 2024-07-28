@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotIrcheckReq struct {
-	Check byte
-}
-
 const S1BattleProto2022RobotIrcheckReqSize = 1
 
 func (s *S1BattleProto2022RobotIrcheckReq) Serialize() []byte {

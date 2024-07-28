@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoTeamCampNotify struct {
-	DataLen int32
-	Data    string
-}
-
 const S1ProtoTeamCampNotifySize = 4
 
 func (s *S1ProtoTeamCampNotify) Serialize() []byte {

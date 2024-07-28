@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoHeartBeatReq struct {
-	Nouse      byte
-	S0Clientid byte
-}
-
 const S1ProtoHeartBeatReqSize = 2
 
 func (s *S1ProtoHeartBeatReq) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetTeamReq struct {
-	TeamId    byte
-	SeatIndex byte
-}
-
 const S1ProtoSetTeamReqSize = 2
 
 func (s *S1ProtoSetTeamReq) Serialize() []byte {

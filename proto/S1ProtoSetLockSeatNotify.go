@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetLockSeatNotify struct {
-	LockSeat byte
-}
-
 const S1ProtoSetLockSeatNotifySize = 1
 
 func (s *S1ProtoSetLockSeatNotify) Serialize() []byte {

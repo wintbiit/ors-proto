@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoPlaceholderNotify struct {
-	EventName string
-	State     byte
-}
-
 const S1BattleProtoPlaceholderNotifySize = 33
 
 func (s *S1BattleProtoPlaceholderNotify) Serialize() []byte {

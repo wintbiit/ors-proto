@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022StuMissileRemainingTime struct {
-	Cmdid uint16
-	Time  byte
-}
-
 const S1BattleProto2022StuMissileRemainingTimeSize = 3
 
 func (s *S1BattleProto2022StuMissileRemainingTime) Serialize() []byte {

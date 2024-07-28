@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetSvrInfoAck struct {
-	ResultId int32
-}
-
 const S1ProtoSetSvrInfoAckSize = 4
 
 func (s *S1ProtoSetSvrInfoAck) Serialize() []byte {

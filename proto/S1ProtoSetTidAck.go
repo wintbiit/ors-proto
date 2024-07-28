@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetTidAck struct {
-	ResultId int32
-	Tid      uint32
-}
-
 const S1ProtoSetTidAckSize = 8
 
 func (s *S1ProtoSetTidAck) Serialize() []byte {

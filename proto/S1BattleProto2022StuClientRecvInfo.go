@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022StuClientRecvInfo struct {
-	TargetRobotId uint16
-	TargetPosX    float32
-	TargetPosY    float32
-}
-
 const S1BattleProto2022StuClientRecvInfoSize = 10
 
 func (s *S1BattleProto2022StuClientRecvInfo) Serialize() []byte {

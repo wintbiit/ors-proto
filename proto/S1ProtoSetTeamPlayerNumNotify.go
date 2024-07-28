@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetTeamPlayerNumNotify struct {
-	PlayerNum byte
-}
-
 const S1ProtoSetTeamPlayerNumNotifySize = 1
 
 func (s *S1ProtoSetTeamPlayerNumNotify) Serialize() []byte {

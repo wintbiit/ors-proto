@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientServerMapSync struct {
-	AnchorMask     byte
-	RobotidListLen byte
-	RobotidList    []S1BattleProto2022ClientRobotMapData
-	YawOffset      float32
-}
-
 const S1BattleProto2022ClientServerMapSyncSize = 314
 
 func (s *S1BattleProto2022ClientServerMapSync) Serialize() []byte {

@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotHited struct {
-	OnHitType   byte
-	AttackSpeed uint16
-	ArmorNumber byte
-	Press       float32
-	TimeStamp   uint64
-}
-
 const S1BattleProto2022RobotHitedSize = 16
 
 func (s *S1BattleProto2022RobotHited) Serialize() []byte {

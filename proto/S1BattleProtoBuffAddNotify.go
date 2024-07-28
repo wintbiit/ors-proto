@@ -1,16 +1,5 @@
 package proto
 
-type S1BattleProtoBuffAddNotify struct {
-	BuffUid      uint64
-	BuffTid      uint32
-	BuffLevel    uint32
-	BuffVisible  byte
-	BuffMaxTime  float32
-	BuffLeftTime float32
-	MsgParams    string
-	PlayerUid    uint64
-}
-
 const S1BattleProtoBuffAddNotifySize = 65
 
 func (s *S1BattleProtoBuffAddNotify) Serialize() []byte {

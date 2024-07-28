@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022SiloStatus struct {
-	DoorStatus  byte
-	FloorStatus byte
-	Errorcode   byte
-}
-
 const S1BattleProto2022SiloStatusSize = 3
 
 func (s *S1BattleProto2022SiloStatus) Serialize() []byte {

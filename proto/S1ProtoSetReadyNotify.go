@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetReadyNotify struct {
-	Uid   uint64
-	State byte
-}
-
 const S1ProtoSetReadyNotifySize = 9
 
 func (s *S1ProtoSetReadyNotify) Serialize() []byte {

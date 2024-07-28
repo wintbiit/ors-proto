@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetCurrMatchNotify struct {
-	CurrMatch string
-	CurrToken string
-}
-
 const S1ProtoSetCurrMatchNotifySize = 160
 
 func (s *S1ProtoSetCurrMatchNotify) Serialize() []byte {

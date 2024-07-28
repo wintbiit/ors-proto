@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoBuffDelNotify struct {
-	PlayerUid uint64
-	BuffUid   uint64
-}
-
 const S1BattleProtoBuffDelNotifySize = 16
 
 func (s *S1BattleProtoBuffDelNotify) Serialize() []byte {

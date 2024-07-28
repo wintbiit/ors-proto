@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoLeaveRoomReq struct {
-	Nouse byte
-}
-
 const S1ProtoLeaveRoomReqSize = 1
 
 func (s *S1ProtoLeaveRoomReq) Serialize() []byte {

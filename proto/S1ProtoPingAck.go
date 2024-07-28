@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoPingAck struct {
-	ResultId int32
-}
-
 const S1ProtoPingAckSize = 4
 
 func (s *S1ProtoPingAck) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyFreedReq struct {
-	BoxFreedNum byte
-}
-
 const S1BattleProto2022SupplyFreedReqSize = 1
 
 func (s *S1BattleProto2022SupplyFreedReq) Serialize() []byte {

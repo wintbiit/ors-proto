@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoTestReq struct {
-	Test string
-}
-
 const S1ProtoTestReqSize = 10240
 
 func (s *S1ProtoTestReq) Serialize() []byte {

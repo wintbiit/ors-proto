@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoLogoutAck struct {
-	ResultId int32
-}
-
 const S1ProtoLogoutAckSize = 4
 
 func (s *S1ProtoLogoutAck) Serialize() []byte {

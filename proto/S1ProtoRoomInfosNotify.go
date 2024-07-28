@@ -1,16 +1,5 @@
 package proto
 
-type S1ProtoRoomInfosNotify struct {
-	PlayersSeatIndex []byte
-	WifiName         string
-	WifiPassword     string
-	CurrMatch        string
-	PlayersCount     int32
-	PlayersUid       []uint64
-	PlayersTid       []uint32
-	PlayersTeamId    []byte
-}
-
 const S1ProtoRoomInfosNotifySize = 100
 
 func (s *S1ProtoRoomInfosNotify) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoLogoutNotify struct {
-	Uid    uint64
-	Reason byte
-}
-
 const S1ProtoLogoutNotifySize = 9
 
 func (s *S1ProtoLogoutNotify) Serialize() []byte {

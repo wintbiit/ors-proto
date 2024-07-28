@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoLogoutReq struct {
-	Account string
-}
-
 const S1ProtoLogoutReqSize = 32
 
 func (s *S1ProtoLogoutReq) Serialize() []byte {

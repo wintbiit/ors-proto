@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SetFlyCatLightAck struct {
-	RecvedLightcode uint32
-}
-
 const S1BattleProto2022SetFlyCatLightAckSize = 4
 
 func (s *S1BattleProto2022SetFlyCatLightAck) Serialize() []byte {

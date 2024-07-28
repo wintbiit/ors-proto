@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022TestTimeDelayDownComplete struct {
-	Count uint32
-}
-
 const S1BattleProto2022TestTimeDelayDownCompleteSize = 4
 
 func (s *S1BattleProto2022TestTimeDelayDownComplete) Serialize() []byte {

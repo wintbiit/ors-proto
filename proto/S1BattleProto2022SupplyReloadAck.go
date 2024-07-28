@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyReloadAck struct {
-	IsAccept byte
-	Action   byte
-}
-
 const S1BattleProto2022SupplyReloadAckSize = 2
 
 func (s *S1BattleProto2022SupplyReloadAck) Serialize() []byte {

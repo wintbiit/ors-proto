@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProtoBaseArmorStateNotify struct {
-	ArmorCount int16
-	ArmorValue int16
-	PlayerUid  uint64
-	ArmorId    int16
-}
-
 const S1BattleProtoBaseArmorStateNotifySize = 14
 
 func (s *S1BattleProtoBaseArmorStateNotify) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SiloCtrlDoor struct {
-	Cmd byte
-}
-
 const S1BattleProto2022SiloCtrlDoorSize = 1
 
 func (s *S1BattleProto2022SiloCtrlDoor) Serialize() []byte {

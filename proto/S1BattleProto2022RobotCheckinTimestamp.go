@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotCheckinTimestamp struct {
-	Magic     uint32
-	DataVer   byte
-	Timestamp uint32
-}
-
 const S1BattleProto2022RobotCheckinTimestampSize = 9
 
 func (s *S1BattleProto2022RobotCheckinTimestamp) Serialize() []byte {

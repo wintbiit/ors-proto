@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoArmorHitAck struct {
-	Result int32
-}
-
 const S1BattleProtoArmorHitAckSize = 4
 
 func (s *S1BattleProtoArmorHitAck) Serialize() []byte {

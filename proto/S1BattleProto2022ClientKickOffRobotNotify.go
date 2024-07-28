@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientKickOffRobotNotify struct {
-	RobotId int32
-	Reason  byte
-}
-
 const S1BattleProto2022ClientKickOffRobotNotifySize = 5
 
 func (s *S1BattleProto2022ClientKickOffRobotNotify) Serialize() []byte {

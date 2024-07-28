@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientEconomyNotify struct {
-	Clientid byte
-	Type     int32
-	Money    int32
-}
-
 const S1BattleProto2022ClientEconomyNotifySize = 9
 
 func (s *S1BattleProto2022ClientEconomyNotify) Serialize() []byte {

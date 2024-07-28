@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProtoPoJiaNotify struct {
-	Uid      uint64
-	State    byte
-	Timeleft float32
-	Timemax  float32
-}
-
 const S1BattleProtoPoJiaNotifySize = 17
 
 func (s *S1BattleProtoPoJiaNotify) Serialize() []byte {

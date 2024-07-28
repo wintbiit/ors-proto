@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientRobotDeathNotify struct {
-	RobotidDeath  byte
-	RobotidKiller byte
-	DeathReason   byte
-	BFirstBlood   byte
-	KillCount     int32
-}
-
 const S1BattleProto2022ClientRobotDeathNotifySize = 8
 
 func (s *S1BattleProto2022ClientRobotDeathNotify) Serialize() []byte {

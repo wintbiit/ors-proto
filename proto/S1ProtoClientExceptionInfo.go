@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoClientExceptionInfo struct {
-	DataLen int32
-	Data    string
-}
-
 const S1ProtoClientExceptionInfoSize = 4
 
 func (s *S1ProtoClientExceptionInfo) Serialize() []byte {

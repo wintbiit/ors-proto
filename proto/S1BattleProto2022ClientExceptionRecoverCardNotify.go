@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientExceptionRecoverCardNotify struct {
-	Teamid    byte
-	Robotid   byte
-	Exception byte
-}
-
 const S1BattleProto2022ClientExceptionRecoverCardNotifySize = 3
 
 func (s *S1BattleProto2022ClientExceptionRecoverCardNotify) Serialize() []byte {

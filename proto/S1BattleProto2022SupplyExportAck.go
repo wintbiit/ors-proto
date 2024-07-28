@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyExportAck struct {
-	LastState byte
-	NowState  byte
-}
-
 const S1BattleProto2022SupplyExportAckSize = 2
 
 func (s *S1BattleProto2022SupplyExportAck) Serialize() []byte {

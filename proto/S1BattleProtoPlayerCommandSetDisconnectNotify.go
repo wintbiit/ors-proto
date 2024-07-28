@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoPlayerCommandSetDisconnectNotify struct {
-	Value byte
-	Uid   uint64
-}
-
 const S1BattleProtoPlayerCommandSetDisconnectNotifySize = 9
 
 func (s *S1BattleProtoPlayerCommandSetDisconnectNotify) Serialize() []byte {

@@ -1,14 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotsDataSync struct {
-	Utc        uint32
-	RobotData  S1BattleProto2022RobotDataSync
-	ModuleId   byte
-	ModuleType byte
-	Progress   byte
-	TimeRemain uint16
-}
-
 const S1BattleProto2022RobotsDataSyncSize = 82
 
 func (s *S1BattleProto2022RobotsDataSync) Serialize() []byte {

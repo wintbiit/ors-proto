@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientAllClientStatusSync struct {
-	Listlength byte
-	Status     []byte
-}
-
 const S1BattleProto2022ClientAllClientStatusSyncSize = 15
 
 func (s *S1BattleProto2022ClientAllClientStatusSync) Serialize() []byte {

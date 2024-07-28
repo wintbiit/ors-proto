@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnvDevicesDescripeAck struct {
-	Name S1BattleProto2022RobotDynamicUIStr
-}
-
 const S1BattleProto2022EnvDevicesDescripeAckSize = 384
 
 func (s *S1BattleProto2022EnvDevicesDescripeAck) Serialize() []byte {

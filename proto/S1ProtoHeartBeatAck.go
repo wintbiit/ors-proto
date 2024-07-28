@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoHeartBeatAck struct {
-	S0Clientid byte
-	ResultId   int32
-}
-
 const S1ProtoHeartBeatAckSize = 5
 
 func (s *S1ProtoHeartBeatAck) Serialize() []byte {

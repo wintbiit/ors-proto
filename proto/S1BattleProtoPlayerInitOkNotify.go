@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoPlayerInitOkNotify struct {
-	Uid uint64
-}
-
 const S1BattleProtoPlayerInitOkNotifySize = 8
 
 func (s *S1BattleProtoPlayerInitOkNotify) Serialize() []byte {

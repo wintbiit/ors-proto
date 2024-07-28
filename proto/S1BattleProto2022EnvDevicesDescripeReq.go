@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnvDevicesDescripeReq struct {
-	Res byte
-}
-
 const S1BattleProto2022EnvDevicesDescripeReqSize = 1
 
 func (s *S1BattleProto2022EnvDevicesDescripeReq) Serialize() []byte {

@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022StuWarning struct {
-	Cmd          uint16
-	WarningLevel byte
-	WarningRobot byte
-}
-
 const S1BattleProto2022StuWarningSize = 4
 
 func (s *S1BattleProto2022StuWarning) Serialize() []byte {

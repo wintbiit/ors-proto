@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProtoMarkerDetectReq struct {
-	MarkerId  byte
-	MarkerStr string
-	Uid       uint64
-	Act       byte
-}
-
 const S1BattleProtoMarkerDetectReqSize = 42
 
 func (s *S1BattleProtoMarkerDetectReq) Serialize() []byte {

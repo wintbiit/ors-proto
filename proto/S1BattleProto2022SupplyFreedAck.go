@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyFreedAck struct {
-	IsAccept byte
-}
-
 const S1BattleProto2022SupplyFreedAckSize = 1
 
 func (s *S1BattleProto2022SupplyFreedAck) Serialize() []byte {

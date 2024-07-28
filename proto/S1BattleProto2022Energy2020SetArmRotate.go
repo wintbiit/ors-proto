@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022Energy2020SetArmRotate struct {
-	CtrlMode byte
-	Direct   byte
-}
-
 const S1BattleProto2022Energy2020SetArmRotateSize = 2
 
 func (s *S1BattleProto2022Energy2020SetArmRotate) Serialize() []byte {

@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoSetWifiInfoNotify struct {
-	WifiName     string
-	WifiPassword string
-}
-
 const S1ProtoSetWifiInfoNotifySize = 64
 
 func (s *S1ProtoSetWifiInfoNotify) Serialize() []byte {

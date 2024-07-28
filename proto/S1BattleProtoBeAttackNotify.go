@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProtoBeAttackNotify struct {
-	Index         int32
-	AttackType    int32
-	AttackerUid   uint64
-	BeAttackerUid uint64
-	Damage        int32
-}
-
 const S1BattleProtoBeAttackNotifySize = 28
 
 func (s *S1BattleProtoBeAttackNotify) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnvHeartBeatAck struct {
-	Time uint32
-}
-
 const S1BattleProto2022EnvHeartBeatAckSize = 4
 
 func (s *S1BattleProto2022EnvHeartBeatAck) Serialize() []byte {

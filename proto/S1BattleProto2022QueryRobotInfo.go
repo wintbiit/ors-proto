@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022QueryRobotInfo struct {
-	ModuleId   byte
-	ModuleType byte
-}
-
 const S1BattleProto2022QueryRobotInfoSize = 2
 
 func (s *S1BattleProto2022QueryRobotInfo) Serialize() []byte {

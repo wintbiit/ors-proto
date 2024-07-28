@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoLeaveRoomAck struct {
-	ResultId e_LeaveRoomAck_ResultType
-}
-
 const S1ProtoLeaveRoomAckSize = 4
 
 func (s *S1ProtoLeaveRoomAck) Serialize() []byte {

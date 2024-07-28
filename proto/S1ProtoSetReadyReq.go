@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoSetReadyReq struct {
-	State byte
-}
-
 const S1ProtoSetReadyReqSize = 1
 
 func (s *S1ProtoSetReadyReq) Serialize() []byte {

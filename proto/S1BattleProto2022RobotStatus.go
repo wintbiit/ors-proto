@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022RobotStatus struct {
-	RobotStatusData S1BattleProto2022RobotStatusData
-}
-
 const S1BattleProto2022RobotStatusSize = 0
 
 func (s *S1BattleProto2022RobotStatus) Serialize() []byte {

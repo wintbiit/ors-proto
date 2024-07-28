@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022SiloCtrLedData struct {
-	R byte
-	G byte
-	B byte
-	A byte
-}
-
 const S1BattleProto2022SiloCtrLedDataSize = 4
 
 func (s *S1BattleProto2022SiloCtrLedData) Serialize() []byte {

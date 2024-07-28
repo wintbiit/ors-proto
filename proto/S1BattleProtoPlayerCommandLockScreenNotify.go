@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoPlayerCommandLockScreenNotify struct {
-	Value byte
-}
-
 const S1BattleProtoPlayerCommandLockScreenNotifySize = 1
 
 func (s *S1BattleProtoPlayerCommandLockScreenNotify) Serialize() []byte {

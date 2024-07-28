@@ -1,11 +1,5 @@
 package proto
 
-type S1ProtoRobotStudentSerialPortInfos struct {
-	OtherType  byte
-	OtherPlr   uint16
-	OtherDelay uint16
-}
-
 const S1ProtoRobotStudentSerialPortInfosSize = 5
 
 func (s *S1ProtoRobotStudentSerialPortInfos) Serialize() []byte {

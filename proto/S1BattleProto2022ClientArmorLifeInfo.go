@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientArmorLifeInfo struct {
-	LifeState byte
-	ModuleId  int16
-}
-
 const S1BattleProto2022ClientArmorLifeInfoSize = 3
 
 func (s *S1BattleProto2022ClientArmorLifeInfo) Serialize() []byte {

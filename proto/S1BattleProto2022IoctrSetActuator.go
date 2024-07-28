@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022IoctrSetActuator struct {
-	Actuator0  byte
-	Actuator1  byte
-	ModuleId   byte
-	ModuleType byte
-}
-
 const S1BattleProto2022IoctrSetActuatorSize = 4
 
 func (s *S1BattleProto2022IoctrSetActuator) Serialize() []byte {

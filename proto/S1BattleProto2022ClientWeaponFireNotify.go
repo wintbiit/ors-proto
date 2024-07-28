@@ -1,12 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientWeaponFireNotify struct {
-	Robotid    byte
-	BulletType byte
-	Speed      float32
-	Angle      float32
-}
-
 const S1BattleProto2022ClientWeaponFireNotifySize = 10
 
 func (s *S1BattleProto2022ClientWeaponFireNotify) Serialize() []byte {

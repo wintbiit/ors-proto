@@ -1,11 +1,5 @@
 package proto
 
-type S1ProtoSetTeamNotify struct {
-	TeamId    byte
-	SeatIndex byte
-	Uid       uint64
-}
-
 const S1ProtoSetTeamNotifySize = 10
 
 func (s *S1ProtoSetTeamNotify) Serialize() []byte {

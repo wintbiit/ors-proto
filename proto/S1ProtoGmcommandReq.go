@@ -1,10 +1,5 @@
 package proto
 
-type S1ProtoGmcommandReq struct {
-	Command string
-	Pars    string
-}
-
 const S1ProtoGmcommandReqSize = 512
 
 func (s *S1ProtoGmcommandReq) Serialize() []byte {

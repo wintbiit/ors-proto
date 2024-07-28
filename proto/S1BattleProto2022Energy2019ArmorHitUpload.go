@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022Energy2019ArmorHitUpload struct {
-	Row     byte
-	ArmorId byte
-	HitType uint16
-}
-
 const S1BattleProto2022Energy2019ArmorHitUploadSize = 4
 
 func (s *S1BattleProto2022Energy2019ArmorHitUpload) Serialize() []byte {

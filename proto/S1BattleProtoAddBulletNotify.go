@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProtoAddBulletNotify struct {
-	Uid         uint64
-	BulletIndex byte
-}
-
 const S1BattleProtoAddBulletNotifySize = 9
 
 func (s *S1BattleProtoAddBulletNotify) Serialize() []byte {

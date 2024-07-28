@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoAutoStateNotify struct {
-	State int32
-}
-
 const S1BattleProtoAutoStateNotifySize = 4
 
 func (s *S1BattleProtoAutoStateNotify) Serialize() []byte {

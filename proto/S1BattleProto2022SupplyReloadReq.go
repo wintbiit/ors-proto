@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SupplyReloadReq struct {
-	ReloadEnable byte
-}
-
 const S1BattleProto2022SupplyReloadReqSize = 1
 
 func (s *S1BattleProto2022SupplyReloadReq) Serialize() []byte {

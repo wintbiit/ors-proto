@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022ArmorParaConfigItem struct {
-	TiggerPress    float32
-	BulletMaxPress float32
-	GolfMinPress   float32
-}
-
 const S1BattleProto2022ArmorParaConfigItemSize = 12
 
 func (s *S1BattleProto2022ArmorParaConfigItem) Serialize() []byte {

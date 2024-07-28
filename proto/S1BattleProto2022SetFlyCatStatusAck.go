@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022SetFlyCatStatusAck struct {
-	RecvedWorkState byte
-}
-
 const S1BattleProto2022SetFlyCatStatusAckSize = 1
 
 func (s *S1BattleProto2022SetFlyCatStatusAck) Serialize() []byte {

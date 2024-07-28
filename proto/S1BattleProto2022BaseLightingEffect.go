@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022BaseLightingEffect struct {
-	LightColor uint32
-}
-
 const S1BattleProto2022BaseLightingEffectSize = 4
 
 func (s *S1BattleProto2022BaseLightingEffect) Serialize() []byte {

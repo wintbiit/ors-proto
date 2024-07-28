@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProtoIsCanUseAtknotify struct {
-	Teamid    []int32
-	State     []int32
-	Teamcount int32
-}
-
 const S1BattleProtoIsCanUseAtknotifySize = 4
 
 func (s *S1BattleProtoIsCanUseAtknotify) Serialize() []byte {

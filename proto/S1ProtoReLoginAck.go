@@ -1,13 +1,5 @@
 package proto
 
-type S1ProtoReLoginAck struct {
-	ResultId     e_LoginAck_ResultType
-	Uid          uint64
-	Token        string
-	WifiName     string
-	WifiPassword string
-}
-
 const S1ProtoReLoginAckSize = 108
 
 func (s *S1ProtoReLoginAck) Serialize() []byte {

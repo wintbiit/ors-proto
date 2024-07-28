@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnvHeartBeatReq struct {
-	Status byte
-}
-
 const S1BattleProto2022EnvHeartBeatReqSize = 1
 
 func (s *S1BattleProto2022EnvHeartBeatReq) Serialize() []byte {

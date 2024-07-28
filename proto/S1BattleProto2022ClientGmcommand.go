@@ -1,10 +1,5 @@
 package proto
 
-type S1BattleProto2022ClientGmcommand struct {
-	Len byte
-	Cmd string
-}
-
 const S1BattleProto2022ClientGmcommandSize = 129
 
 func (s *S1BattleProto2022ClientGmcommand) Serialize() []byte {

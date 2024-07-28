@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoUserStateAck struct {
-	Online int32
-}
-
 const S1ProtoUserStateAckSize = 4
 
 func (s *S1ProtoUserStateAck) Serialize() []byte {

@@ -8,7 +8,6 @@ import (
 	"path"
 	"strconv"
 	"strings"
-	"sync"
 	"unicode/utf8"
 
 	"github.com/iancoleman/strcase"
@@ -44,16 +43,18 @@ func main() {
 		return
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(len(files))
-	for _, file := range files {
-		go func(file os.DirEntry) {
-			defer wg.Done()
-			convertProto(file, dir, dst)
-		}(file)
+	genFile, err := os.OpenFile(path.Join(dst, "proto.gen.go"),
+		os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	wg.Wait()
+	genFile.WriteString("package " + dst + "\n\n")
+	defer genFile.Close()
+	for _, file := range files {
+		convertProto(file, dir, dst, genFile)
+	}
 
 	fmt.Println("Done")
 }
@@ -77,7 +78,7 @@ var typeMap = map[string]string{
 var sizeMap map[string]int
 
 // read proto csv file
-func readProtoFile(name string) (map[string]string, error) {
+func readProtoFile(name string) ([]Pair, error) {
 	f, err := os.Open(name)
 	if err != nil {
 		return nil, err
@@ -88,7 +89,7 @@ func readProtoFile(name string) (map[string]string, error) {
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
 
-	result := make(map[string]string)
+	result := make([]Pair, 0)
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -99,23 +100,49 @@ func readProtoFile(name string) (map[string]string, error) {
 		mappedType, ok := typeMap[trimmedTyp]
 		if ok {
 			trimmedTyp = mappedType
+		} else if utf8.RuneCountInString(trimmedTyp) == len(trimmedTyp) {
+			trimmedTyp = strcase.ToCamel(trimmedTyp)
 		}
 
 		for i := 0; i < strings.Count(typ, "[]"); i++ {
 			trimmedTyp = "[]" + trimmedTyp
 		}
 
-		result[field] = trimmedTyp
+		//result[field] = trimmedTyp
+		result = append(result, Pair{field, trimmedTyp})
 	}
 
 	return result, nil
 }
 
 // generate proto file
-func generateProtoFile(dir, name, pkg string, size int, fields map[string]string) error {
+func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields []Pair) error {
 	name = strcase.ToCamel(name)
 
+	genFile.WriteString(fmt.Sprintf("type %s struct {\n", name))
+
+	for _, e := range fields {
+		field := e.Key
+		typ := e.Value
+
+		if strings.HasPrefix(field, "_") {
+			field = "S" + field[1:]
+		}
+		// if is Chinese, leave as is. if not, convert to camel case
+		if utf8.RuneCountInString(field) == len(field) {
+			field = strcase.ToCamel(field)
+		}
+		genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
+	}
+
+	genFile.WriteString("}\n\n")
+
 	fp := path.Join(dir, name+".go")
+
+	if _, err := os.Stat(fp); err == nil {
+		return nil
+	}
+
 	f, err := os.OpenFile(fp, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
 	if err != nil {
 		return err
@@ -124,18 +151,6 @@ func generateProtoFile(dir, name, pkg string, size int, fields map[string]string
 	defer f.Close()
 
 	f.WriteString(fmt.Sprintf("package %s\n\n", pkg))
-
-	f.WriteString(fmt.Sprintf("type %s struct {\n", name))
-
-	for field, typ := range fields {
-		// if is Chinese, leave as is. if not, convert to camel case
-		if utf8.RuneCountInString(field) == len(field) {
-			field = strcase.ToCamel(field)
-		}
-		f.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
-	}
-
-	f.WriteString("}\n\n")
 
 	f.WriteString(fmt.Sprintf("const %sSize = %d\n\n", name, size))
 
@@ -186,7 +201,7 @@ func readSizeMap(dir string) (map[string]int, error) {
 	return sizeMap, nil
 }
 
-func convertProto(file os.DirEntry, dir, dst string) {
+func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) {
 	if file.IsDir() {
 		return
 	}
@@ -228,7 +243,7 @@ func convertProto(file os.DirEntry, dir, dst string) {
 		size = 0
 	}
 
-	err = generateProtoFile(dst, name, dst, size, fields)
+	err = generateProtoFile(dst, name, dst, size, genFile, fields)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -280,4 +295,9 @@ func convertProtoId(dir, dst, name string) {
 	f.WriteString(")\n")
 
 	fmt.Println("Done")
+}
+
+type Pair struct {
+	Key   string
+	Value string
 }

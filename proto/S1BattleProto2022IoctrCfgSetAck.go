@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022IoctrCfgSetAck struct {
-	ErrCode    byte
-	ModuleId   byte
-	ModuleType byte
-}
-
 const S1BattleProto2022IoctrCfgSetAckSize = 3
 
 func (s *S1BattleProto2022IoctrCfgSetAck) Serialize() []byte {

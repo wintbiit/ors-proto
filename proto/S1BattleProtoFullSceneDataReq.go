@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoFullSceneDataReq struct {
-	Nouse byte
-}
-
 const S1BattleProtoFullSceneDataReqSize = 1
 
 func (s *S1BattleProtoFullSceneDataReq) Serialize() []byte {

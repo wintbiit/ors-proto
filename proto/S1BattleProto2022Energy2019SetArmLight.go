@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022Energy2019SetArmLight struct {
-	ExtVar     []uint16
-	Row        byte
-	ArmorColor []uint32
-	ArmColor   []uint32
-	Effect     []byte
-}
-
 const S1BattleProto2022Energy2019SetArmLightSize = 56
 
 func (s *S1BattleProto2022Energy2019SetArmLight) Serialize() []byte {

@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoGmcommandAck struct {
-	ResultId int32
-}
-
 const S1ProtoGmcommandAckSize = 4
 
 func (s *S1ProtoGmcommandAck) Serialize() []byte {

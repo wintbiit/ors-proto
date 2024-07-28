@@ -1,14 +1,5 @@
 package proto
 
-type S1BattleProtoDeviceModuleNotify struct {
-	AllDevice           []uint64
-	AllDeviceConnection []byte
-	AllDevicePrority    []byte
-	Uid                 uint64
-	ProductType         uint16
-	AllDeviceCount      uint16
-}
-
 const S1BattleProtoDeviceModuleNotifySize = 12
 
 func (s *S1BattleProtoDeviceModuleNotify) Serialize() []byte {

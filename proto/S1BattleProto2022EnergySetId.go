@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProto2022EnergySetId struct {
-	Res byte
-}
-
 const S1BattleProto2022EnergySetIdSize = 1
 
 func (s *S1BattleProto2022EnergySetId) Serialize() []byte {

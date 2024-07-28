@@ -1,11 +1,5 @@
 package proto
 
-type S1BattleProto2022StuCustomControlData struct {
-	Cmd     uint16
-	ListLen byte
-	Data    []byte
-}
-
 const S1BattleProto2022StuCustomControlDataSize = 33
 
 func (s *S1BattleProto2022StuCustomControlData) Serialize() []byte {

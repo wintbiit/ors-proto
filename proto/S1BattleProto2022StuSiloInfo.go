@@ -1,13 +1,5 @@
 package proto
 
-type S1BattleProto2022StuSiloInfo struct {
-	LaunchOpeningStatus  byte
-	AttackTarget         byte
-	TargetChangeTime     uint16
-	OperateLaunchCmdTime uint16
-	Cmd                  uint16
-}
-
 const S1BattleProto2022StuSiloInfoSize = 8
 
 func (s *S1BattleProto2022StuSiloInfo) Serialize() []byte {

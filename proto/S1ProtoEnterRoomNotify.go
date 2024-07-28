@@ -1,9 +1,5 @@
 package proto
 
-type S1ProtoEnterRoomNotify struct {
-	Uid uint64
-}
-
 const S1ProtoEnterRoomNotifySize = 8
 
 func (s *S1ProtoEnterRoomNotify) Serialize() []byte {

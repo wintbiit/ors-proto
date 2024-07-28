@@ -1,9 +1,5 @@
 package proto
 
-type S1BattleProtoPlayerCommandMoveNotify struct {
-	Value byte
-}
-
 const S1BattleProtoPlayerCommandMoveNotifySize = 1
 
 func (s *S1BattleProtoPlayerCommandMoveNotify) Serialize() []byte {
