@@ -11,7 +11,7 @@ import (
 )
 
 func TestSendCommand(t *testing.T) {
-	s := NewServer("192.168.1.2", 72, proto.S1StuMainJudgeClientTId, proto.S1StuMainJudgeClientTeamId)
+	s := NewClient("192.168.1.2", 72, proto.S1StuMainJudgeClientTId, proto.S1StuMainJudgeClientTeamId)
 
 	s.Debug = true
 
@@ -96,7 +96,7 @@ func TestValidateGeneratedProtoData(t *testing.T) {
 
 	bytes = bytes[:n]
 
-	s := new(Server)
+	s := new(Client)
 	s.ClientId = proto.S1StuMainJudgeClientId
 	s.ClientTId = proto.S1StuMainJudgeClientTId
 	s.ClientTeamId = proto.S1StuMainJudgeClientTeamId

@@ -15,7 +15,7 @@ const HeartBeatInterval = 200 * time.Millisecond
 
 type ProtoHandler func(ctx *proto.S1ProtoContext)
 
-type Server struct {
+type Client struct {
 	IpAddress    string
 	ClientId     uint16
 	ClientTId    uint32
@@ -33,7 +33,7 @@ type Server struct {
 	bufPool    sync.Pool
 }
 
-func (s *Server) Connect() error {
+func (s *Client) Connect() error {
 	s.Close()
 
 	// tcp connection
@@ -51,7 +51,7 @@ func (s *Server) Connect() error {
 	return nil
 }
 
-func (s *Server) Close() error {
+func (s *Client) Close() error {
 	if s.control != nil {
 		close(s.control)
 	}
@@ -78,11 +78,11 @@ func (s *Server) Close() error {
 	return nil
 }
 
-func (s *Server) IsConnected() bool {
+func (s *Client) IsConnected() bool {
 	return s.socket != nil
 }
 
-func (s *Server) send(data []byte) error {
+func (s *Client) send(data []byte) error {
 	if !s.IsConnected() {
 		return proto.NotConnectedError
 	}
@@ -92,12 +92,12 @@ func (s *Server) send(data []byte) error {
 	return err
 }
 
-func (s *Server) autoSeq() byte {
+func (s *Client) autoSeq() byte {
 	s.seq++
 	return s.seq
 }
 
-func (s *Server) Send(protoId uint16, data proto.Proto) error {
+func (s *Client) Send(protoId uint16, data proto.Proto) error {
 	if !s.IsConnected() {
 		return proto.NotConnectedError
 	}
@@ -116,7 +116,7 @@ func (s *Server) Send(protoId uint16, data proto.Proto) error {
 	return nil
 }
 
-func (s *Server) packProtoData(protoId uint16, p proto.Proto) []byte {
+func (s *Client) packProtoData(protoId uint16, p proto.Proto) []byte {
 	data := p.Serialize()
 
 	header := proto.S1ProtoHeader{
@@ -130,7 +130,7 @@ func (s *Server) packProtoData(protoId uint16, p proto.Proto) []byte {
 	return append(headerBytes, data...)
 }
 
-func (s *Server) Login(pass string) error {
+func (s *Client) Login(pass string) error {
 	login := &proto.S1ProtoLoginReq{
 		Account:  fmt.Sprintf("s0unit_client_%d_%d", s.ClientId, s.ClientId),
 		Password: pass,
@@ -154,7 +154,7 @@ func (s *Server) Login(pass string) error {
 	return nil
 }
 
-func (s *Server) Logout() error {
+func (s *Client) Logout() error {
 	logout := &proto.S1ProtoLogoutReq{
 		Account: fmt.Sprintf("s0unit_client_%d_%d", s.ClientId, s.ClientId),
 	}
@@ -170,7 +170,7 @@ func (s *Server) Logout() error {
 	return nil
 }
 
-func (s *Server) sendHeartBeat() error {
+func (s *Client) sendHeartBeat() error {
 	heartBeat := &proto.S1ProtoHeartBeatReq{
 		Nouse:      0,
 		S0Clientid: byte(s.ClientId),
@@ -183,7 +183,7 @@ func (s *Server) sendHeartBeat() error {
 	return nil
 }
 
-func (s *Server) recv() {
+func (s *Client) recv() {
 	for {
 		select {
 		case <-s.control:
@@ -194,7 +194,7 @@ func (s *Server) recv() {
 	}
 }
 
-func (s *Server) readTcpPipe() {
+func (s *Client) readTcpPipe() {
 	// read data from socket
 	// headerBytes := make([]byte, proto.S1ProtoHeaderSize)
 	headerBytes := s.bufPool.Get().([]byte)
@@ -251,7 +251,7 @@ func (s *Server) readTcpPipe() {
 	go handler(ctx)
 }
 
-func (s *Server) heartBeat() {
+func (s *Client) heartBeat() {
 	for {
 		time.Sleep(HeartBeatInterval)
 		select {
@@ -268,11 +268,11 @@ func (s *Server) heartBeat() {
 	}
 }
 
-func NewServer(ip string, clientId uint16, clientTId, clientTeamId uint32) *Server {
+func NewClient(ip string, clientId uint16, clientTId, clientTeamId uint32) *Client {
 	hasher := sha1.New()
 	hasher.Write([]byte(fmt.Sprintf("%d%d%d", clientId, clientTId, clientTeamId)))
 
-	return &Server{
+	return &Client{
 		IpAddress:    ip,
 		ClientId:     clientId,
 		ClientTId:    clientTId,
@@ -288,12 +288,12 @@ func NewServer(ip string, clientId uint16, clientTId, clientTeamId uint32) *Serv
 	}
 }
 
-func (s *Server) WithLogger(logger Logger) *Server {
+func (s *Client) WithLogger(logger Logger) *Client {
 	s.logger = logger
 	return s
 }
 
-func (s *Server) WithHandler(protoID uint16, handler ProtoHandler) *Server {
+func (s *Client) WithHandler(protoID uint16, handler ProtoHandler) *Client {
 	if s.handlers == nil {
 		s.handlers = make(map[uint16]ProtoHandler)
 	}
@@ -303,7 +303,7 @@ func (s *Server) WithHandler(protoID uint16, handler ProtoHandler) *Server {
 	return s
 }
 
-func (s *Server) WithAnyHandler(handler ProtoHandler) *Server {
+func (s *Client) WithAnyHandler(handler ProtoHandler) *Client {
 	s.anyHandler = handler
 	return s
 }
