@@ -12,7 +12,7 @@ import (
 func TestSendCommand(t *testing.T) {
 	s := NewServer("192.168.1.2", 72, proto.S1StuMainJudgeClientTId, proto.S1StuMainJudgeClientTeamId)
 
-	s.debug = true
+	s.Debug = true
 
 	if err := s.Connect(); err != nil {
 		t.Fatal(err)

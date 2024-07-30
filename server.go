@@ -20,8 +20,8 @@ type Server struct {
 	ClientTId    uint32
 	ClientTeamId uint32
 	Hash         int64
+	Debug        bool
 
-	debug     bool
 	logger    Logger
 	control   chan struct{}
 	heartbeat chan struct{}
@@ -107,7 +107,7 @@ func (s *Server) Send(protoId uint16, data proto.Proto) error {
 		return err
 	}
 
-	if s.debug {
+	if s.Debug {
 		s.logger.Infof("send protoID: %d, data len: %v", protoId, len(dataBytes))
 	}
 
@@ -223,7 +223,7 @@ func (s *Server) readTcpPipe() {
 	// handle protocol
 	handler, ok := s.handlers[header.ProtoId]
 	if !ok {
-		if s.debug {
+		if s.Debug {
 			protoName, ok := proto.ProtoIdMap[int(header.ProtoId)]
 			if !ok {
 				protoName = "unknown"
@@ -236,7 +236,7 @@ func (s *Server) readTcpPipe() {
 	// create context
 	ctx := proto.NewS1ProtoContext(&header, bodyBytes)
 
-	if s.debug {
+	if s.Debug {
 		s.logger.Infof("recv protoID: %d, data len: %v", header.ProtoId, len(headerBytes)+len(bodyBytes))
 	}
 
