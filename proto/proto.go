@@ -1,6 +1,7 @@
 package proto
 
 import (
+	"context"
 	"reflect"
 	"time"
 )
@@ -10,48 +11,39 @@ type Proto interface {
 	Deserialize(data []byte) error
 }
 
+const HandlerTimeout = 5 * time.Second
+
 type S1ProtoContext struct {
-	Header *S1ProtoHeader
-	Data   []byte
+	Header    *S1ProtoHeader
+	ProtoName string
+	Data      []byte
+	ProtoData Proto
 
-	// context.Context
-	done chan struct{}
-	err  error
-	dl   time.Time
-	m    map[interface{}]interface{}
+	context.Context
 }
 
-func (s *S1ProtoContext) Deadline() (deadline time.Time, ok bool) {
-	return s.dl, true
-}
-
-func (s *S1ProtoContext) Done() <-chan struct{} {
-	return s.done
-}
-
-func (s *S1ProtoContext) Err() error {
-	return s.err
-}
-
-func (s *S1ProtoContext) Value(key interface{}) interface{} {
-	return s.m[key]
-}
-
-func (s *S1ProtoContext) Set(key, value interface{}) {
-	s.m[key] = value
-}
-
-func (s *S1ProtoContext) Cancel() {
-	close(s.done)
-}
-
-func NewS1ProtoContext(header *S1ProtoHeader, body []byte) *S1ProtoContext {
-	return &S1ProtoContext{
-		Header: header,
-		Data:   body,
-		done:   make(chan struct{}),
-		m:      make(map[interface{}]interface{}),
+func NewS1ProtoContext(header *S1ProtoHeader, body []byte) (*S1ProtoContext, context.CancelFunc) {
+	protoData := CreateProtoInstance(header.ProtoId)
+	if protoData == nil {
+		return nil, nil
 	}
+
+	err := protoData.Deserialize(body)
+	if err != nil {
+		return nil, nil
+	}
+
+	inCtx, cancel := context.WithTimeout(context.Background(), HandlerTimeout)
+
+	ctx := &S1ProtoContext{
+		Header:    header,
+		ProtoName: ProtoIdMap[header.ProtoId],
+		Data:      body,
+		ProtoData: protoData,
+		Context:   inCtx,
+	}
+
+	return ctx, cancel
 }
 
 func CreateProtoInstance(protoid uint16) Proto {

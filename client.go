@@ -10,8 +10,10 @@ import (
 	"github.com/wintbiit/ors-proto/proto"
 )
 
-const ServerPort = 64998
-const HeartBeatInterval = 200 * time.Millisecond
+const (
+	ServerPort        = 64998
+	HeartBeatInterval = 200 * time.Millisecond
+)
 
 type ProtoHandler func(ctx *proto.S1ProtoContext)
 
@@ -232,11 +234,10 @@ func (s *Client) readTcpPipe() {
 		s.logger.Infof("recv proto: [%d] %s, data len: %v", header.ProtoId, protoName, len(headerBytes)+len(bodyBytes))
 	}
 
-	ctx := proto.NewS1ProtoContext(&header, bodyBytes)
+	ctx, cancel := proto.NewS1ProtoContext(&header, bodyBytes)
 
 	if s.anyHandler != nil {
-		ctx := proto.NewS1ProtoContext(&header, bodyBytes)
-		go s.anyHandler(ctx)
+		s.anyHandler(ctx)
 	}
 
 	// handle protocol
@@ -248,7 +249,10 @@ func (s *Client) readTcpPipe() {
 		return
 	}
 
-	go handler(ctx)
+	go func() {
+		defer cancel()
+		handler(ctx)
+	}()
 }
 
 func (s *Client) heartBeat() {

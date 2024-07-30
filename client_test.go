@@ -11,7 +11,14 @@ import (
 )
 
 func TestSendCommand(t *testing.T) {
-	s := NewClient("192.168.1.2", 72, proto.S1StuMainJudgeClientTId, proto.S1StuMainJudgeClientTeamId)
+	s := NewClient(
+		"192.168.1.2",
+		72,
+		proto.S1StuMainJudgeClientTId,
+		proto.S1StuMainJudgeClientTeamId).
+		WithAnyHandler(func(ctx *proto.S1ProtoContext) {
+			t.Logf("Received proto [%s] %+v", ctx.ProtoName, ctx.ProtoData)
+		})
 
 	s.Debug = true
 
@@ -130,7 +137,7 @@ func TestValidateGeneratedProtoData(t *testing.T) {
 }
 
 func TestJsonProtoById(t *testing.T) {
-	var proto = proto.CreateProtoInstance(proto.ProtoIDS1ProtoLoginReq)
+	proto := proto.CreateProtoInstance(proto.ProtoIDS1ProtoLoginReq)
 
 	if proto == nil {
 		t.Fatal("Failed to create proto instance")
@@ -143,7 +150,6 @@ func TestJsonProtoById(t *testing.T) {
 	t.Logf("Serialized: %v", serialized)
 
 	json, err := json2.Marshal(proto)
-
 	if err != nil {
 		t.Fatal(err)
 	}

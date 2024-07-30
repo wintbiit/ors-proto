@@ -142,7 +142,7 @@ func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields
 		}
 
 		fieldJson := strcase.ToLowerCamel(field)
-		//genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
+		// genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
 
 		genFile.WriteString(fmt.Sprintf("\t%s %s `json:\"%s\"`\n", field, typ, fieldJson))
 	}
