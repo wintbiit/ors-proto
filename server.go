@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"net"
+	"sync"
 	"time"
 
 	"github.com/wintbiit/ors-proto/proto"
@@ -27,6 +28,7 @@ type Server struct {
 	socket    net.Conn
 	handlers  map[uint16]ProtoHandler
 	seq       byte
+	bufPool   sync.Pool
 }
 
 func (s *Server) Connect() error {
@@ -185,53 +187,60 @@ func (s *Server) recv() {
 		case <-s.control:
 			return
 		default:
-			// read data from socket
-			headerBytes := make([]byte, proto.S1ProtoHeaderSize)
-			_, err := s.socket.Read(headerBytes)
-			if err != nil {
-				s.logger.Errorf("read header error: %v", err)
-				break
-			}
-
-			// deserialize header
-			var header proto.S1ProtoHeader
-			if err := header.Deserialize(headerBytes); err != nil {
-				s.logger.Errorf("deserialize header error: %v", err)
-				break
-			}
-
-			// read body
-			bodyBytes := make([]byte, header.DataLen)
-			_, err = s.socket.Read(bodyBytes)
-
-			if err != nil {
-				s.logger.Errorf("read body error: %v", err)
-				break
-			}
-
-			// handle protocol
-			handler, ok := s.handlers[header.ProtoId]
-			if !ok {
-				if s.debug {
-					protoName, ok := proto.ProtoIdMap[int(header.ProtoId)]
-					if !ok {
-						protoName = "unknown"
-					}
-					s.logger.Warnf("ignore proto: [%d] %s", header.ProtoId, protoName)
-				}
-				break
-			}
-
-			// create context
-			ctx := proto.NewS1ProtoContext(&header, bodyBytes)
-
-			if s.debug {
-				s.logger.Infof("recv protoID: %d, data len: %v", header.ProtoId, len(headerBytes)+len(bodyBytes))
-			}
-
-			go handler(ctx)
+			s.readTcpPipe()
 		}
 	}
+}
+
+func (s *Server) readTcpPipe() {
+	// read data from socket
+	//headerBytes := make([]byte, proto.S1ProtoHeaderSize)
+	headerBytes := s.bufPool.Get().([]byte)
+	defer s.bufPool.Put(headerBytes)
+
+	_, err := s.socket.Read(headerBytes)
+	if err != nil {
+		s.logger.Errorf("read header error: %v", err)
+		return
+	}
+
+	// deserialize header
+	var header proto.S1ProtoHeader
+	if err := header.Deserialize(headerBytes); err != nil {
+		s.logger.Errorf("deserialize header error: %v", err)
+		return
+	}
+
+	// read body
+	bodyBytes := make([]byte, header.DataLen)
+	_, err = s.socket.Read(bodyBytes)
+
+	if err != nil {
+		s.logger.Errorf("read body error: %v", err)
+		return
+	}
+
+	// handle protocol
+	handler, ok := s.handlers[header.ProtoId]
+	if !ok {
+		if s.debug {
+			protoName, ok := proto.ProtoIdMap[int(header.ProtoId)]
+			if !ok {
+				protoName = "unknown"
+			}
+			s.logger.Warnf("ignore proto: [%d] %s", header.ProtoId, protoName)
+		}
+		return
+	}
+
+	// create context
+	ctx := proto.NewS1ProtoContext(&header, bodyBytes)
+
+	if s.debug {
+		s.logger.Infof("recv protoID: %d, data len: %v", header.ProtoId, len(headerBytes)+len(bodyBytes))
+	}
+
+	go handler(ctx)
 }
 
 func (s *Server) heartBeat() {
