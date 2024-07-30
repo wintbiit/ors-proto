@@ -11,6 +11,7 @@ import (
 )
 
 const ServerPort = 64998
+const HeartBeatInterval = 200 * time.Millisecond
 
 type ProtoHandler func(ctx *proto.S1ProtoContext)
 
@@ -22,13 +23,14 @@ type Server struct {
 	Hash         int64
 	Debug        bool
 
-	logger    Logger
-	control   chan struct{}
-	heartbeat chan struct{}
-	socket    net.Conn
-	handlers  map[uint16]ProtoHandler
-	seq       byte
-	bufPool   sync.Pool
+	logger     Logger
+	control    chan struct{}
+	heartbeat  chan struct{}
+	socket     net.Conn
+	handlers   map[uint16]ProtoHandler
+	anyHandler ProtoHandler
+	seq        byte
+	bufPool    sync.Pool
 }
 
 func (s *Server) Connect() error {
@@ -221,24 +223,29 @@ func (s *Server) readTcpPipe() {
 		return
 	}
 
+	protoName, ok := proto.ProtoIdMap[header.ProtoId]
+	if !ok {
+		protoName = "unknown"
+	}
+
+	if s.Debug {
+		s.logger.Infof("recv proto: [%d] %s, data len: %v", header.ProtoId, protoName, len(headerBytes)+len(bodyBytes))
+	}
+
+	ctx := proto.NewS1ProtoContext(&header, bodyBytes)
+
+	if s.anyHandler != nil {
+		ctx := proto.NewS1ProtoContext(&header, bodyBytes)
+		go s.anyHandler(ctx)
+	}
+
 	// handle protocol
 	handler, ok := s.handlers[header.ProtoId]
 	if !ok {
 		if s.Debug {
-			protoName, ok := proto.ProtoIdMap[int(header.ProtoId)]
-			if !ok {
-				protoName = "unknown"
-			}
-			s.logger.Warnf("ignore proto: [%d] %s", header.ProtoId, protoName)
+			s.logger.Warnf("unhandled proto: [%d] %s", header.ProtoId, protoName)
 		}
 		return
-	}
-
-	// create context
-	ctx := proto.NewS1ProtoContext(&header, bodyBytes)
-
-	if s.Debug {
-		s.logger.Infof("recv protoID: %d, data len: %v", header.ProtoId, len(headerBytes)+len(bodyBytes))
 	}
 
 	go handler(ctx)
@@ -296,4 +303,7 @@ func (s *Server) WithHandler(protoID uint16, handler ProtoHandler) *Server {
 	return s
 }
 
-var HeartBeatInterval = 200 * time.Millisecond
+func (s *Server) WithAnyHandler(handler ProtoHandler) *Server {
+	s.anyHandler = handler
+	return s
+}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -35,7 +36,6 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	convertProtoId(dir, dst)
 
 	files, err := os.ReadDir(dir)
 	if err != nil {
@@ -52,9 +52,17 @@ func main() {
 
 	genFile.WriteString("package " + dst + "\n\n")
 	defer genFile.Close()
+
+	protos := make(map[string]struct{})
 	for _, file := range files {
-		convertProto(file, dir, dst, genFile)
+		proto := convertProto(file, dir, dst, genFile)
+
+		if proto != "" {
+			protos[proto] = struct{}{}
+		}
 	}
+
+	convertProtoId(dir, dst, protos)
 
 	fmt.Println("Done")
 }
@@ -116,7 +124,7 @@ func readProtoFile(name string) ([]Pair, error) {
 }
 
 // generate proto file
-func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields []Pair) error {
+func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields []Pair) (string, error) {
 	name = strcase.ToCamel(name)
 
 	genFile.WriteString(fmt.Sprintf("type %s struct {\n", name))
@@ -132,7 +140,11 @@ func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields
 		if utf8.RuneCountInString(field) == len(field) {
 			field = strcase.ToCamel(field)
 		}
-		genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
+
+		fieldJson := strcase.ToLowerCamel(field)
+		//genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
+
+		genFile.WriteString(fmt.Sprintf("\t%s %s `json:\"%s\"`\n", field, typ, fieldJson))
 	}
 
 	genFile.WriteString("}\n\n")
@@ -140,12 +152,12 @@ func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields
 	fp := path.Join(dir, name+".go")
 
 	if _, err := os.Stat(fp); err == nil {
-		return nil
+		return name, nil
 	}
 
 	f, err := os.OpenFile(fp, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
 	if err != nil {
-		return err
+		return name, err
 	}
 
 	defer f.Close()
@@ -172,7 +184,7 @@ func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields
 
 	f.WriteString("}\n")
 
-	return nil
+	return name, nil
 }
 
 func readSizeMap(dir string) (map[string]int, error) {
@@ -201,32 +213,32 @@ func readSizeMap(dir string) (map[string]int, error) {
 	return sizeMap, nil
 }
 
-func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) {
+func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) string {
 	if file.IsDir() {
-		return
+		return ""
 	}
 
 	name := file.Name()
 	if !strings.HasSuffix(name, ".csv") {
-		return
+		return ""
 	}
 
 	if name == "sizes.csv" {
-		return
+		return ""
 	}
 
 	if name == "proto.csv" {
-		return
+		return ""
 	}
 
 	if name == "battle_proto.csv" {
-		return
+		return ""
 	}
 
 	parts := strings.Split(name, ".")
 	if len(parts) != 2 {
 		fmt.Println("Invalid file name:", name)
-		return
+		return ""
 	}
 
 	name = parts[0]
@@ -234,7 +246,7 @@ func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) {
 	fields, err := readProtoFile(path.Join(dir, file.Name()))
 	if err != nil {
 		fmt.Println(err)
-		return
+		return ""
 	}
 
 	size, ok := sizeMap[name]
@@ -243,14 +255,16 @@ func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) {
 		size = 0
 	}
 
-	err = generateProtoFile(dst, name, dst, size, genFile, fields)
+	proto, err := generateProtoFile(dst, name, dst, size, genFile, fields)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return ""
 	}
+
+	return proto
 }
 
-func convertProtoId(dir, dst string) {
+func convertProtoId(dir, dst string, protos map[string]struct{}) {
 	f, err := os.Open(path.Join(dir, "proto.csv"))
 	if err != nil {
 		fmt.Println(err)
@@ -320,6 +334,10 @@ func convertProtoId(dir, dst string) {
 
 	f.WriteString(fmt.Sprintf("package %s\n\n", dst))
 
+	f.WriteString("import (\n")
+	f.WriteString("\t\"reflect\"\n")
+	f.WriteString(")\n\n")
+
 	f.WriteString("const (\n")
 
 	keys := make([]int, 0, len(idMap))
@@ -330,15 +348,30 @@ func convertProtoId(dir, dst string) {
 	sort.Ints(keys)
 
 	for _, k := range keys {
-		f.WriteString(fmt.Sprintf("\t%s = %d\n", idMap[k], k))
+		f.WriteString(fmt.Sprintf("\t%s uint16 = %d\n", idMap[k], k))
 	}
 
 	f.WriteString(")\n\n")
 
-	f.WriteString(fmt.Sprintf("var ProtoIdMap = map[int]string{\n"))
+	f.WriteString(fmt.Sprintf("var ProtoIdMap = map[uint16]string{\n"))
 
 	for _, k := range keys {
 		f.WriteString(fmt.Sprintf("\t%d: \"%s\",\n", k, idMap[k]))
+	}
+
+	f.WriteString("}\n\n")
+
+	f.WriteString("var ProtoTypeMap = map[uint16]reflect.Type{\n")
+
+	for _, k := range keys {
+		typeName := strings.TrimPrefix(idMap[k], "ProtoID")
+		typeName = strcase.ToCamel(typeName)
+
+		if _, ok := protos[typeName]; !ok {
+			f.WriteString("\t//")
+		}
+
+		f.WriteString(fmt.Sprintf("\t%d: reflect.TypeOf(%s{}),\n", k, typeName))
 	}
 
 	f.WriteString("}\n")
@@ -349,4 +382,8 @@ func convertProtoId(dir, dst string) {
 type Pair struct {
 	Key   string
 	Value string
+}
+
+var ProtoTypeMap = map[string]reflect.Type{
+	"byte": reflect.TypeOf(byte(0)),
 }

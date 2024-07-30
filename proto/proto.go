@@ -1,6 +1,7 @@
 package proto
 
 import (
+	"reflect"
 	"time"
 )
 
@@ -51,6 +52,15 @@ func NewS1ProtoContext(header *S1ProtoHeader, body []byte) *S1ProtoContext {
 		done:   make(chan struct{}),
 		m:      make(map[interface{}]interface{}),
 	}
+}
+
+func CreateProtoInstance(protoid uint16) Proto {
+	typ, ok := ProtoTypeMap[protoid]
+	if !ok {
+		return nil
+	}
+
+	return reflect.New(typ).Interface().(Proto)
 }
 
 const (
