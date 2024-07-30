@@ -201,6 +201,7 @@ func (s *Server) readTcpPipe() {
 	_, err := s.socket.Read(headerBytes)
 	if err != nil {
 		s.logger.Errorf("read header error: %v", err)
+		s.Close()
 		return
 	}
 
