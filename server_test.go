@@ -95,11 +95,11 @@ func TestValidateGeneratedProtoData(t *testing.T) {
 
 	bytes = bytes[:n]
 
-	var s = new(Server)
+	s := new(Server)
 	s.ClientId = proto.S1StuMainJudgeClientId
 	s.ClientTId = proto.S1StuMainJudgeClientTId
 	s.ClientTeamId = proto.S1StuMainJudgeClientTeamId
-	var genBytes = s.packProtoData(proto.ProtoIDS1ProtoLoginReq, &proto.S1ProtoLoginReq{
+	genBytes := s.packProtoData(proto.ProtoIDS1ProtoLoginReq, &proto.S1ProtoLoginReq{
 		Account:  fmt.Sprintf("s0unit_client_%d_%d", s.ClientId, s.ClientId),
 		Password: proto.S1StuMainJudgeLoginPass,
 		Version:  proto.S1StuVersion,
