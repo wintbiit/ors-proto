@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -34,8 +35,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	// convertProtoId(dir, dst, "proto")
-	// convertProtoId(dir, dst, "battle_proto")
+	convertProtoId(dir, dst)
 
 	files, err := os.ReadDir(dir)
 	if err != nil {
@@ -108,7 +108,7 @@ func readProtoFile(name string) ([]Pair, error) {
 			trimmedTyp = "[]" + trimmedTyp
 		}
 
-		//result[field] = trimmedTyp
+		// result[field] = trimmedTyp
 		result = append(result, Pair{field, trimmedTyp})
 	}
 
@@ -250,8 +250,8 @@ func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) {
 	}
 }
 
-func convertProtoId(dir, dst, name string) {
-	f, err := os.Open(path.Join(dir, name+".csv"))
+func convertProtoId(dir, dst string) {
+	f, err := os.Open(path.Join(dir, "proto.csv"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -259,7 +259,7 @@ func convertProtoId(dir, dst, name string) {
 
 	defer f.Close()
 
-	idMap := make(map[string]int)
+	idMap := make(map[int]string)
 
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
@@ -272,10 +272,44 @@ func convertProtoId(dir, dst, name string) {
 			fmt.Println(err)
 			return
 		}
-		idMap[parts[0]] = id
+		protoName := parts[0]
+		if strings.HasPrefix(protoName, "ID_") {
+			protoName = strings.Replace(protoName, "ID_", "", 1)
+		}
+		protoName = "ProtoID" + protoName
+
+		idMap[id] = protoName
 	}
 
-	fp := path.Join(dst, name+"_id"+".go")
+	f, err = os.Open(path.Join(dir, "battle_proto.csv"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	defer f.Close()
+
+	scanner = bufio.NewScanner(f)
+	scanner.Scan()
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, ",")
+		id, err := strconv.Atoi(parts[1])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		protoName := parts[0]
+		if strings.HasPrefix(protoName, "ID_") {
+			protoName = strings.Replace(protoName, "ID_", "", 1)
+		}
+		protoName = "ProtoID" + protoName
+
+		idMap[id] = protoName
+	}
+
+	fp := path.Join(dst, "proto_id"+".gen.go")
 	f, err = os.OpenFile(fp, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
 	if err != nil {
 		fmt.Println(err)
@@ -288,11 +322,26 @@ func convertProtoId(dir, dst, name string) {
 
 	f.WriteString("const (\n")
 
-	for field, id := range idMap {
-		f.WriteString(fmt.Sprintf("\t%s = %d\n", field, id))
+	keys := make([]int, 0, len(idMap))
+	for k := range idMap {
+		keys = append(keys, k)
 	}
 
-	f.WriteString(")\n")
+	sort.Ints(keys)
+
+	for _, k := range keys {
+		f.WriteString(fmt.Sprintf("\t%s = %d\n", idMap[k], k))
+	}
+
+	f.WriteString(")\n\n")
+
+	f.WriteString(fmt.Sprintf("var ProtoIdMap = map[int]string{\n"))
+
+	for _, k := range keys {
+		f.WriteString(fmt.Sprintf("\t%d: \"%s\",\n", k, idMap[k]))
+	}
+
+	f.WriteString("}\n")
 
 	fmt.Println("Done")
 }

@@ -81,5 +81,6 @@ func (s *S1ProtoLoginReq) Deserialize(bytes []byte) error {
 	s.Tid = binary.LittleEndian.Uint32(bytes[68:72])
 	s.Teamid = binary.LittleEndian.Uint32(bytes[72:76])
 	s.Hash = int64(binary.LittleEndian.Uint64(bytes[76:84]))
+
 	return nil
 }

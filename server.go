@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/wintbiit/ors-proto/proto"
 )
@@ -19,12 +20,13 @@ type Server struct {
 	ClientTeamId uint32
 	Hash         int64
 
-	debug    bool
-	logger   Logger
-	control  chan struct{}
-	socket   net.Conn
-	handlers map[uint16]ProtoHandler
-	seq      byte
+	debug     bool
+	logger    Logger
+	control   chan struct{}
+	heartbeat chan struct{}
+	socket    net.Conn
+	handlers  map[uint16]ProtoHandler
+	seq       byte
 }
 
 func (s *Server) Connect() error {
@@ -51,6 +53,10 @@ func (s *Server) Close() error {
 	}
 
 	s.control = nil
+
+	if s.heartbeat != nil {
+		close(s.heartbeat)
+	}
 
 	if s.socket != nil {
 		if err := s.Logout(); err != nil {
@@ -92,22 +98,9 @@ func (s *Server) Send(protoId uint16, data proto.Proto) error {
 		return proto.NotConnectedError
 	}
 
-	dataBytes := data.Serialize()
-
-	// serialize data
-	header := proto.S1ProtoHeader{
-		ProtoId:    protoId,
-		DataLen:    uint32(len(dataBytes)),
-		SequenceId: s.autoSeq(),
-	}
-
-	headerBytes := header.Serialize()
+	dataBytes := s.packProtoData(protoId, data)
 
 	// send data
-	if err := s.send(headerBytes); err != nil {
-		return err
-	}
-
 	if err := s.send(dataBytes); err != nil {
 		return err
 	}
@@ -117,6 +110,20 @@ func (s *Server) Send(protoId uint16, data proto.Proto) error {
 	}
 
 	return nil
+}
+
+func (s *Server) packProtoData(protoId uint16, p proto.Proto) []byte {
+	data := p.Serialize()
+
+	header := proto.S1ProtoHeader{
+		ProtoId:    protoId,
+		DataLen:    uint32(len(data)),
+		SequenceId: s.autoSeq(),
+	}
+
+	headerBytes := header.Serialize()
+
+	return append(headerBytes, data...)
 }
 
 func (s *Server) Login(pass string) error {
@@ -133,6 +140,13 @@ func (s *Server) Login(pass string) error {
 		return err
 	}
 
+	if s.heartbeat != nil {
+		close(s.heartbeat)
+	}
+
+	s.heartbeat = make(chan struct{})
+	go s.heartBeat()
+
 	return nil
 }
 
@@ -145,10 +159,14 @@ func (s *Server) Logout() error {
 		return err
 	}
 
+	if s.heartbeat != nil {
+		close(s.heartbeat)
+	}
+
 	return nil
 }
 
-func (s *Server) HeartBeat() error {
+func (s *Server) sendHeartBeat() error {
 	heartBeat := &proto.S1ProtoHeartBeatReq{
 		Nouse:      0,
 		S0Clientid: byte(s.ClientId),
@@ -195,7 +213,11 @@ func (s *Server) recv() {
 			handler, ok := s.handlers[header.ProtoId]
 			if !ok {
 				if s.debug {
-					s.logger.Warnf("ignore protoID: %d", header.ProtoId)
+					protoName, ok := proto.ProtoIdMap[int(header.ProtoId)]
+					if !ok {
+						protoName = "unknown"
+					}
+					s.logger.Warnf("ignore proto: [%d] %s", header.ProtoId, protoName)
 				}
 				break
 			}
@@ -208,6 +230,23 @@ func (s *Server) recv() {
 			}
 
 			go handler(ctx)
+		}
+	}
+}
+
+func (s *Server) heartBeat() {
+	for {
+		time.Sleep(HeartBeatInterval)
+		select {
+		case <-s.control:
+			return
+		case <-s.heartbeat:
+			return
+		default:
+			if err := s.sendHeartBeat(); err != nil {
+				s.logger.Errorf("send heart beat error: %v", err)
+				break
+			}
 		}
 	}
 }
@@ -241,3 +280,5 @@ func (s *Server) WithHandler(protoID uint16, handler ProtoHandler) *Server {
 
 	return s
 }
+
+var HeartBeatInterval = 200 * time.Millisecond
