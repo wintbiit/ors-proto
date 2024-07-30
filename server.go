@@ -194,7 +194,7 @@ func (s *Server) recv() {
 
 func (s *Server) readTcpPipe() {
 	// read data from socket
-	//headerBytes := make([]byte, proto.S1ProtoHeaderSize)
+	// headerBytes := make([]byte, proto.S1ProtoHeaderSize)
 	headerBytes := s.bufPool.Get().([]byte)
 	defer s.bufPool.Put(headerBytes)
 
@@ -273,6 +273,11 @@ func NewServer(ip string, clientId uint16, clientTId, clientTeamId uint32) *Serv
 		Hash:         0,
 		handlers:     make(map[uint16]ProtoHandler),
 		logger:       &slogLogger{},
+		bufPool: sync.Pool{
+			New: func() interface{} {
+				return make([]byte, proto.S1ProtoHeaderSize)
+			},
+		},
 	}
 }
 
