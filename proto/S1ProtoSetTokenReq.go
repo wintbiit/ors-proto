@@ -4,11 +4,11 @@ const S1ProtoSetTokenReqSize = 32
 
 func (s *S1ProtoSetTokenReq) Serialize() []byte {
 	bytes := make([]byte, S1ProtoSetTokenReqSize)
-	// TODO: Implement serialization
+	copy(bytes[0:32], s.Token)
 	return bytes
 }
 
 func (s *S1ProtoSetTokenReq) Deserialize(bytes []byte) error {
-	// TODO: Implement deserialization
+	s.Token = string(bytes[0:32])
 	return nil
 }

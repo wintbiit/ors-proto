@@ -22,15 +22,19 @@ type S1ProtoContext struct {
 	context.Context
 }
 
-func NewS1ProtoContext(header *S1ProtoHeader, body []byte) (*S1ProtoContext, context.CancelFunc) {
+func NewS1ProtoContext(header *S1ProtoHeader, body []byte) (*S1ProtoContext, context.CancelFunc, error) {
+	if header.ProtoId == 0 {
+		return nil, nil, nil
+	}
+
 	protoData := CreateProtoInstance(header.ProtoId)
 	if protoData == nil {
-		return nil, nil
+		return nil, nil, ProtoNotFoundError
 	}
 
 	err := protoData.Deserialize(body)
 	if err != nil {
-		return nil, nil
+		return nil, nil, err
 	}
 
 	inCtx, cancel := context.WithTimeout(context.Background(), HandlerTimeout)
@@ -43,7 +47,7 @@ func NewS1ProtoContext(header *S1ProtoHeader, body []byte) (*S1ProtoContext, con
 		Context:   inCtx,
 	}
 
-	return ctx, cancel
+	return ctx, cancel, nil
 }
 
 func CreateProtoInstance(protoid uint16) Proto {

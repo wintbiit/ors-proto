@@ -37,6 +37,12 @@ func main() {
 		return
 	}
 
+	descriptionMap, err = readDescriptionMap(dir)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	files, err := os.ReadDir(dir)
 	if err != nil {
 		fmt.Println(err)
@@ -85,8 +91,10 @@ var typeMap = map[string]string{
 
 var sizeMap map[string]int
 
+var descriptionMap map[string]string
+
 // read proto csv file
-func readProtoFile(name string) ([]Pair, error) {
+func readProtoFile(name string) ([]ProtoRecord, error) {
 	f, err := os.Open(name)
 	if err != nil {
 		return nil, err
@@ -97,13 +105,17 @@ func readProtoFile(name string) ([]Pair, error) {
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
 
-	result := make([]Pair, 0)
+	result := make([]ProtoRecord, 0)
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		parts := strings.Split(line, ",")
 		field := parts[0]
 		typ := parts[1]
+		desc := ""
+		if len(parts) > 2 {
+			desc = parts[2]
+		}
 		trimmedTyp := strings.ReplaceAll(typ, "[]", "")
 		mappedType, ok := typeMap[trimmedTyp]
 		if ok {
@@ -117,21 +129,25 @@ func readProtoFile(name string) ([]Pair, error) {
 		}
 
 		// result[field] = trimmedTyp
-		result = append(result, Pair{field, trimmedTyp})
+		result = append(result, ProtoRecord{field, trimmedTyp, desc})
 	}
 
 	return result, nil
 }
 
 // generate proto file
-func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields []Pair) (string, error) {
+func generateProtoFile(dir, name, pkg, desc string, size int, genFile *os.File, fields []ProtoRecord) (string, error) {
 	name = strcase.ToCamel(name)
 
+	if desc != "" {
+		genFile.WriteString(fmt.Sprintf("// %s %s\n", name, desc))
+	}
 	genFile.WriteString(fmt.Sprintf("type %s struct {\n", name))
 
 	for _, e := range fields {
-		field := e.Key
-		typ := e.Value
+		field := e.FieldName
+		typ := e.FieldType
+		description := e.Description
 
 		if strings.HasPrefix(field, "_") {
 			field = "S" + field[1:]
@@ -144,6 +160,7 @@ func generateProtoFile(dir, name, pkg string, size int, genFile *os.File, fields
 		fieldJson := strcase.ToLowerCamel(field)
 		// genFile.WriteString(fmt.Sprintf("\t%s %s\n", field, typ))
 
+		genFile.WriteString(fmt.Sprintf("\t// %s %s\n", field, description))
 		genFile.WriteString(fmt.Sprintf("\t%s %s `json:\"%s\"`\n", field, typ, fieldJson))
 	}
 
@@ -213,6 +230,29 @@ func readSizeMap(dir string) (map[string]int, error) {
 	return sizeMap, nil
 }
 
+func readDescriptionMap(dir string) (map[string]string, error) {
+	descriptionMap := make(map[string]string)
+	f := path.Join(dir, "descriptions.csv")
+
+	file, err := os.Open(f)
+	if err != nil {
+		return nil, err
+	}
+
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Scan()
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, ",")
+		descriptionMap[parts[0]] = parts[1]
+	}
+
+	return descriptionMap, nil
+}
+
 func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) string {
 	if file.IsDir() {
 		return ""
@@ -232,6 +272,10 @@ func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) string {
 	}
 
 	if name == "battle_proto.csv" {
+		return ""
+	}
+
+	if name == "descriptions.csv" {
 		return ""
 	}
 
@@ -255,7 +299,12 @@ func convertProto(file os.DirEntry, dir, dst string, genFile *os.File) string {
 		size = 0
 	}
 
-	proto, err := generateProtoFile(dst, name, dst, size, genFile, fields)
+	desc, ok := descriptionMap[name]
+	if !ok {
+		fmt.Println("Description not found for", name)
+	}
+
+	proto, err := generateProtoFile(dst, name, dst, desc, size, genFile, fields)
 	if err != nil {
 		fmt.Println(err)
 		return ""
@@ -371,7 +420,8 @@ func convertProtoId(dir, dst string, protos map[string]struct{}) {
 			f.WriteString("\t//")
 		}
 
-		f.WriteString(fmt.Sprintf("\t%d: reflect.TypeOf(%s{}),\n", k, typeName))
+		// f.WriteString(fmt.Sprintf("\t%d: reflect.TypeOf(%s{}),\n", k, typeName))
+		f.WriteString(fmt.Sprintf("\t%d: reflect.TypeFor[%s](),\n", k, typeName))
 	}
 
 	f.WriteString("}\n")
@@ -379,9 +429,10 @@ func convertProtoId(dir, dst string, protos map[string]struct{}) {
 	fmt.Println("Done")
 }
 
-type Pair struct {
-	Key   string
-	Value string
+type ProtoRecord struct {
+	FieldName   string
+	FieldType   string
+	Description string
 }
 
 var ProtoTypeMap = map[string]reflect.Type{

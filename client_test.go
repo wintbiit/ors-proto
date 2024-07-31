@@ -17,7 +17,11 @@ func TestSendCommand(t *testing.T) {
 		proto.S1StuMainJudgeClientTId,
 		proto.S1StuMainJudgeClientTeamId).
 		WithAnyHandler(func(ctx *proto.S1ProtoContext) {
-			t.Logf("Received proto [%s] %+v", ctx.ProtoName, ctx.ProtoData)
+			if ctx.ProtoData == nil {
+				t.Logf("Received proto [%s] %+v", ctx.ProtoName, ctx.Data)
+			} else {
+				t.Logf("Received proto [%s] %+v", ctx.ProtoName, ctx.ProtoData)
+			}
 		})
 
 	s.Debug = true
@@ -33,6 +37,8 @@ func TestSendCommand(t *testing.T) {
 	if err := s.Login(proto.S1StuMainJudgeLoginPass); err != nil {
 		t.Fatal(err)
 	}
+
+	time.Sleep(1 * time.Second)
 
 	cmd := "-start"
 

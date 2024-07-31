@@ -1,14 +1,16 @@
 package proto
 
+import "encoding/binary"
+
 const S1ProtoLeaveRoomAckSize = 4
 
 func (s *S1ProtoLeaveRoomAck) Serialize() []byte {
 	bytes := make([]byte, S1ProtoLeaveRoomAckSize)
-	// TODO: Implement serialization
+	binary.LittleEndian.PutUint32(bytes[0:], uint32(s.ResultId))
 	return bytes
 }
 
 func (s *S1ProtoLeaveRoomAck) Deserialize(bytes []byte) error {
-	// TODO: Implement deserialization
+	s.ResultId = ELeaveRoomAckResultType(binary.LittleEndian.Uint32(bytes[0:]))
 	return nil
 }

@@ -4,11 +4,11 @@ const S1ProtoSetSvrInfoReqSize = 32
 
 func (s *S1ProtoSetSvrInfoReq) Serialize() []byte {
 	bytes := make([]byte, S1ProtoSetSvrInfoReqSize)
-	// TODO: Implement serialization
+	copy(bytes[0:], s.SvrName)
 	return bytes
 }
 
 func (s *S1ProtoSetSvrInfoReq) Deserialize(bytes []byte) error {
-	// TODO: Implement deserialization
+	s.SvrName = string(bytes[0:32])
 	return nil
 }

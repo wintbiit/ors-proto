@@ -4,7 +4,7 @@ const S1ProtoClientSyncNotifySize = 29
 
 func (s *S1ProtoClientSyncNotify) Serialize() []byte {
 	bytes := make([]byte, S1ProtoClientSyncNotifySize)
-	// TODO: Implement serialization
+
 	return bytes
 }
 

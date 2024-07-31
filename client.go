@@ -234,7 +234,15 @@ func (s *Client) readTcpPipe() {
 		s.logger.Infof("recv proto: [%d] %s, data len: %v", header.ProtoId, protoName, len(headerBytes)+len(bodyBytes))
 	}
 
-	ctx, cancel := proto.NewS1ProtoContext(&header, bodyBytes)
+	ctx, cancel, err := proto.NewS1ProtoContext(&header, bodyBytes)
+	if err != nil {
+		s.logger.Errorf("create proto context for %d error: %v", header.ProtoId, err)
+		return
+	}
+
+	if ctx == nil {
+		return
+	}
 
 	if s.anyHandler != nil {
 		s.anyHandler(ctx)

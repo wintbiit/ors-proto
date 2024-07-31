@@ -15,3 +15,11 @@ func (e *invalidDataError) Error() string {
 }
 
 var InvalidDataError error = new(invalidDataError)
+
+type protoNotFoundError string
+
+func (e *protoNotFoundError) Error() string {
+	return "proto not found"
+}
+
+var ProtoNotFoundError error = new(protoNotFoundError)
